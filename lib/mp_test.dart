@@ -55,7 +55,7 @@ class MyMultiPrec extends MultiPrec {
 
 	// 多倍長整数同士の乗算
 	@override
-  void mul( MPData ret, MPData a, MPData b ){
+	void mul( MPData ret, MPData a, MPData b ){
 		a = clone( a );
 		b = clone( b );
 
@@ -154,10 +154,11 @@ class MultiPrecTest {
 		testSqrt( 1000 );
 		testRound1();
 		testRound2();
+		testFactorial();
 	}
 
 	void testSqrt( int prec ){
-		int i;
+		int i, j;
 
 		for( int order = 0; order <= 7; order++ ){
 			switch( order ){
@@ -184,7 +185,8 @@ class MultiPrecTest {
 			debugPrint( "${tmp[0]}." );
 			if( tmp.length >= 2 ){
 				for( i = 0; i < tmp[1].length; i += 100 ){
-					debugPrint( tmp[1].substring( i, i + 100 ) );
+					j = i + 100; if( j > tmp[1].length ) j = tmp[1].length;
+					debugPrint( tmp[1].substring( i, j ) );
 				}
 			}
 		}
@@ -240,5 +242,129 @@ class MultiPrecTest {
 				}
 			}
 		}
+	}
+
+	MPData _mpCombination( int n, int r ){
+		MPData ret;
+
+		ret = MPData();
+		if( n < r ){
+			mp.set( ret, mp.I( "0" ) );
+			return ret;
+		}
+		if( n - r < r ) r = n - r;
+		if( r == 0 ){
+			mp.set( ret, mp.I( "1" ) );
+			return ret;
+		}
+		if( r == 1 ){
+			mp.str2num( ret, "$n" );
+			return ret;
+		}
+
+		List<int> numer = List.filled( r, 0 );
+		List<int> denom = List.filled( r, 0 );
+
+		int i, k;
+		int pivot;
+		int offset;
+
+		for( i = 0; i < r; i++ ){
+			numer[i] = n - r + i + 1;
+			denom[i] = i + 1;
+		}
+
+		for( k = 2; k <= r; k++ ){
+			pivot = denom[k - 1];
+			if( pivot > 1 ){
+				offset = MATH_IMOD( n - r, k );
+				for( i = k - 1; i < r; i += k ){
+					numer[i - offset] = numer[i - offset] ~/ pivot;
+					denom[i] = denom[i] ~/ pivot;
+				}
+			}
+		}
+
+		ret = MPData();
+		mp.set( ret, mp.I( "1" ) );
+		MPData ii = MPData();
+		for( i = 0; i < r; i++ ){
+			if( numer[i] > 1 ){
+				mp.str2num( ii, "${numer[i]}" );
+				mp.mul( ret, ret, ii );
+			}
+		}
+		return ret;
+	}
+	MPData _mpFactorial( int n ){
+		if( n == 0 ){
+			MPData ret = MPData();
+			mp.set( ret, mp.I( "1" ) );
+			return ret;
+		}
+		MPData value = _mpFactorial( n ~/ 2 );
+		mp.mul( value, value, value );
+		mp.mul( value, value, _mpCombination( n, n ~/ 2 ) );
+		if( (n & 1) != 0 ){
+			MPData tmp = MPData();
+			mp.str2num( tmp, "${(n + 1) ~/ 2}" );
+			mp.mul( value, value, tmp );
+		}
+		return value;
+	}
+	void mpFactorial( MPData ret, int x ){
+		bool m = false;
+		if( x < 0 ){
+			m = true;
+			x = 0 - x;
+		}
+		mp.str2num( ret, "1" );
+		MPData ii = MPData();
+		for( int i = 2; i <= x; i++ ){
+			mp.str2num( ii, "$i" );
+			mp.mul( ret, ret, ii );
+		}
+		if( m ){
+			mp.neg( ret );
+		}
+	}
+	void mpFactorial2( MPData ret, int x ){
+		bool m = false;
+		if( x < 0 ){
+			m = true;
+			x = 0 - x;
+		}
+		mp.set( ret, _mpFactorial( x ) );
+		if( m ){
+			mp.neg( ret );
+		}
+	}
+	void testFactorial(){
+		mp = MultiPrec();
+
+		var i, j;
+		int time;
+		MPData a;
+		String s;
+
+		time = DateTime.now().millisecondsSinceEpoch;
+		a = MPData();
+		mpFactorial( a, 999 );
+		s = mp.num2str( a );
+		for( i = 0; i < s.length; i += 100 ){
+			j = i + 100; if( j > s.length ) j = s.length;
+			debugPrint( s.substring( i, j ) );
+		}
+		debugPrint( "${DateTime.now().millisecondsSinceEpoch - time} ms" );
+
+		time = DateTime.now().millisecondsSinceEpoch;
+		a = MPData();
+		mpFactorial2( a, 999 );
+		s = mp.num2str( a );
+		for( i = 0; i < s.length; i += 100 ){
+			j = i + 100; if( j > s.length ) j = s.length;
+			debugPrint( s.substring( i, j ) );
+		}
+		debugPrint( "${DateTime.now().millisecondsSinceEpoch - time} ms" );
 	}
 }

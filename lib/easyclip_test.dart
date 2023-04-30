@@ -153,8 +153,6 @@ class EasyClipTest {
 
 		// 時間計算の例
 		clip.setMode( CLIP_MODE_S_TIME );
-		clip.procLine( "48h" );
-		mathValue = clip.getAnsValue(); debugPrint( "${mathValue.hour()}h ${mathValue.min()}m ${mathValue.sec()}s ${mathValue.frame()}f" );
 		clip.procLine( "48h / 10" );
 		mathValue = clip.getAnsValue(); debugPrint( "${mathValue.hour()}h ${mathValue.min()}m ${mathValue.sec()}s ${mathValue.frame()}f" );
 		clip.procLine( "12:00:00" );
