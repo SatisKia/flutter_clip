@@ -23,6 +23,9 @@ class CanvasTestWidget extends FlutterClipWidget {
     // 文字情報を登録する
     regGWorldDefCharInfo( 0 );
 
+	// カラー・パレットを登録する
+    clip().setPalette( COLOR_WIN );
+
     EasyCanvas easyCanvas = EasyCanvas();
     gWorldLine = ( gWorld, x1, y1, x2, y2 ){
       Canvas canvas = curCanvas();
@@ -42,11 +45,9 @@ class CanvasTestWidget extends FlutterClipWidget {
       }
     };
     doCommandGWorld = ( width, height ){
-      Canvas canvas = clip().resizeCanvas( width, height );
+      Canvas canvas = curClip().resizeCanvas( width, height );
       canvas.setFont( 10 );
     };
-
-    clip().setPalette( COLOR_WIN );
 
     clip().procScript( [
       "func text3d_x",

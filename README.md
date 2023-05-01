@@ -1,5 +1,7 @@
 # flutter_clip
 
+Calculator Language for Immediate Processing
+
 pubspec.yaml
 ```yml
 dependencies:
@@ -9,7 +11,7 @@ dependencies:
       ref: HEAD
 ```
 
-Basic:
+Widget:
 ```dart
 import 'package:flutter/cupertino.dart';
 
@@ -35,11 +37,11 @@ class HogeWidget extends FlutterClipWidget {
     // カラー・パレットを登録する
     clip().setPalette( COLOR_WIN );
 
-    doCommandGWorld = ( width, height ){ // :gworldコマンドが実行された時に呼ばれる
+    doCommandGWorld = ( width, height ){ // ":gworld"コマンドが実行された時に呼ばれる
       Canvas canvas = curClip().resizeCanvas( width, height );
       canvas.setFont( 10 );
     };
-    doCommandGUpdate = ( gWorld ){ // :gupdate TRUEが実行された時に呼ばれる
+    doCommandGUpdate = ( gWorld ){ // ":gupdate TRUE"が実行された時に呼ばれる
       curClip().updateCanvas();
     };
   }
