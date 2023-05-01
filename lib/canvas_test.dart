@@ -1,5 +1,3 @@
-import 'dart:ui' as ui;
-
 import 'package:flutter/cupertino.dart';
 
 import 'package:clip/extras/canvas.dart';
@@ -11,65 +9,17 @@ import 'package:clip/extras/proc_error.dart';
 import 'package:clip/gworld.dart';
 import 'package:clip/proc.dart';
 
-class MyRenderObjectWidget extends SingleChildRenderObjectWidget {
-  final RenderBox renderBox;
-  const MyRenderObjectWidget(this.renderBox, {Key? key}) : super(key: key);
+import 'package:flutter_clip/widget.dart';
 
-  @override
-  RenderObject createRenderObject(BuildContext context) {
-    return renderBox;
-  }
-}
+class MyFlutterClipWidget extends FlutterClipWidget {
+  GlobalObjectKey hogeKey = const GlobalObjectKey( '__HOGE_KEY__' ); // 一意の値を渡す
 
-class MyRenderBox extends RenderBox {
-  GlobalObjectKey key;
-  MyRenderBox(this.key);
-
-  @override
-  bool get sizedByParent => true;
-
-  @override
-  void performResize() {
-    size = constraints.biggest;
-  }
-
-  // view上の描画領域
-  double offsetX = 0.0;
-  double offsetY = 0.0;
-  double contentWidth  = 0.0;
-  double contentHeight = 0.0;
-
-  // オーバーライドする関数
-  void paintCanvas(ui.Canvas c, ui.Paint p) {
-    // 描画処理
+  MyFlutterClipWidget(double width, double height) : super(width, height){
+    setKey( hogeKey );
   }
 
   @override
-  void paint(PaintingContext context, ui.Offset offset) {
-    offsetX = offset.dx;
-    offsetY = offset.dy;
-    contentWidth  = key.currentContext!.size!.width;
-    contentHeight = key.currentContext!.size!.height;
-
-    ui.Canvas c = context.canvas;
-    c.save();
-
-    // 座標軸の移動
-    c.translate(offsetX, offsetY);
-
-    // クリッピング
-    c.clipRect(ui.Rect.fromLTWH(0, 0, contentWidth, contentHeight));
-
-    paintCanvas(c, ui.Paint());
-
-    c.restore();
-  }
-}
-
-class CanvasTest {
-  double contentWidth;
-  double contentHeight;
-  CanvasTest(this.contentWidth, this.contentHeight) {
+  void init() {
     // 文字情報を登録する
     regGWorldDefCharInfo( 0 );
 
@@ -92,37 +42,13 @@ class CanvasTest {
       }
     };
     doCommandGWorld = ( width, height ){
-      Canvas canvas = curClip().resizeCanvas( width, height );
+      Canvas canvas = clip().resizeCanvas( width, height );
       canvas.setFont( 10 );
     };
-  }
 
-  GlobalObjectKey hogeKey = const GlobalObjectKey('__HOGE_KEY__'); // 一意の値を渡す
+    clip().setPalette( COLOR_WIN );
 
-  Widget build() {
-    return SizedBox(
-        key: hogeKey,
-        width: 256,//contentWidth,
-        height: 256,//contentHeight,
-        child: MyRenderObjectWidget(HogeRenderBox(hogeKey))
-    );
-  }
-}
-
-class HogeRenderBox extends MyRenderBox {
-  HogeRenderBox(GlobalObjectKey key) : super(key) {
-  }
-
-  @override
-  void paintCanvas(ui.Canvas c, ui.Paint p) {
-    EasyClip clip = EasyClip();
-    clip.setPalette( COLOR_WIN );
-    Canvas canvas = clip.createCanvas();
-    canvas.lock( c, p );
-
-    clip.commandGWorld( 256, 256 );
-    clip.commandGColor( 252 );
-    clip.procScript( [
+    clip().procScript( [
       "func text3d_x",
       "    :ans FALSE",
       "    :sprint @@s @0",
@@ -269,9 +195,13 @@ class HogeRenderBox extends MyRenderBox {
       "    :gcolor @c # 現在色を戻す",
       "end"
     ] );
-    clip.procLine( "plot3d [\"exp([-\\](x*x+y*y] \\-2 2 0.2 \\-2 2 0.2 0.2 5 1" );
-//    clip.updateCanvas();
+  }
 
-    canvas.unlock();
+  @override
+  void paint() {
+    clip().commandGWorld( width().toInt(), height().toInt() );
+    clip().commandGColor( 252 );
+    clip().procLine( "plot3d [\"exp([-\\](x*x+y*y] \\-2 2 0.2 \\-2 2 0.2 0.2 5 1" );
+//    clip.updateCanvas();
   }
 }
