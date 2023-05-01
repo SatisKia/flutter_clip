@@ -9,12 +9,12 @@ import 'package:clip/extras/proc_error.dart';
 import 'package:clip/gworld.dart';
 import 'package:clip/proc.dart';
 
-import 'package:flutter_clip/widget.dart';
+import '../widget.dart';
 
-class MyFlutterClipWidget extends FlutterClipWidget {
+class CanvasTestWidget extends FlutterClipWidget {
   GlobalObjectKey hogeKey = const GlobalObjectKey( '__HOGE_KEY__' ); // 一意の値を渡す
 
-  MyFlutterClipWidget(double width, double height) : super(width, height){
+  CanvasTestWidget(double width, double height) : super(width, height){
     setKey( hogeKey );
   }
 
@@ -202,6 +202,6 @@ class MyFlutterClipWidget extends FlutterClipWidget {
     clip().commandGWorld( width().toInt(), height().toInt() );
     clip().commandGColor( 252 );
     clip().procLine( "plot3d [\"exp([-\\](x*x+y*y] \\-2 2 0.2 \\-2 2 0.2 0.2 5 1" );
-//    clip.updateCanvas();
+//    clip().updateCanvas();
   }
 }
