@@ -23,7 +23,7 @@ class CanvasTestWidget extends FlutterClipWidget {
     // 文字情報を登録する
     regGWorldDefCharInfo( 0 );
 
-	// カラー・パレットを登録する
+    // カラー・パレットを登録する
     clip().setPalette( COLOR_WIN );
 
     EasyCanvas easyCanvas = EasyCanvas();
@@ -49,6 +49,7 @@ class CanvasTestWidget extends FlutterClipWidget {
       canvas.setFont( 10 );
     };
 
+    // 関数の定義など、初回のみの処理はここで行ってしまう
     clip().procScript( [
       "func text3d_x",
       "    :ans FALSE",
