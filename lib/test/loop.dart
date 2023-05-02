@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 
-import 'package:clip/extras/canvas.dart';
-import 'package:clip/extras/defcharinfo.dart';
+import 'package:dart_clip/extras/canvas.dart';
+import 'package:dart_clip/extras/defcharinfo.dart';
 
 import '../widget.dart';
 

@@ -9,10 +9,7 @@ Provides a function to display graphics drawn by the CLIP engine as widgets.
 pubspec.yaml
 ```yml
 dependencies:
-  flutter_clip:
-    git:
-      url: https://github.com/SatisKia/flutter_clip.git
-      ref: HEAD
+  flutter_clip: ^1.0.0
 ```
 
 ## Widget definition and construction
@@ -29,10 +26,10 @@ Simple Example:
 ```dart
 import 'package:flutter/cupertino.dart';
 
-import 'package:clip/extras/color_win.dart';
-import 'package:clip/extras/defcharinfo.dart';
-import 'package:clip/extras/easyclip.dart';
-import 'package:clip/proc.dart';
+import 'package:dart_clip/extras/color_win.dart';
+import 'package:dart_clip/extras/defcharinfo.dart';
+import 'package:dart_clip/extras/easyclip.dart';
+import 'package:dart_clip/proc.dart';
 import 'package:flutter_clip/widget.dart';
 
 class HogeWidget extends FlutterClipWidget {

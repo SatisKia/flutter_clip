@@ -2,7 +2,7 @@ import 'dart:ui' as ui;
 
 import 'package:flutter/cupertino.dart';
 
-import 'package:clip/extras/easyclip.dart';
+import 'package:dart_clip/extras/easyclip.dart';
 
 class _FlutterClipRenderObjectWidget extends SingleChildRenderObjectWidget {
   final RenderBox renderBox;

@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 
-import 'package:clip/math/complex.dart';
-import 'package:clip/math/math.dart';
-import 'package:clip/math/multiprec.dart';
+import 'package:dart_clip/math/complex.dart';
+import 'package:dart_clip/math/math.dart';
+import 'package:dart_clip/math/multiprec.dart';
 
 class MyMultiPrec extends MultiPrec {
   // 離散フーリエ変換

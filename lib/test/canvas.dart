@@ -1,13 +1,13 @@
 import 'package:flutter/cupertino.dart';
 
-import 'package:clip/extras/canvas.dart';
-import 'package:clip/extras/color_win.dart';
-import 'package:clip/extras/defcharinfo.dart';
-import 'package:clip/extras/easycanvas.dart';
-import 'package:clip/extras/easyclip.dart';
-import 'package:clip/extras/proc_error.dart';
-import 'package:clip/gworld.dart';
-import 'package:clip/proc.dart';
+import 'package:dart_clip/extras/canvas.dart';
+import 'package:dart_clip/extras/color_win.dart';
+import 'package:dart_clip/extras/defcharinfo.dart';
+import 'package:dart_clip/extras/easycanvas.dart';
+import 'package:dart_clip/extras/easyclip.dart';
+import 'package:dart_clip/extras/proc_error.dart';
+import 'package:dart_clip/gworld.dart';
+import 'package:dart_clip/proc.dart';
 
 import '../widget.dart';
 

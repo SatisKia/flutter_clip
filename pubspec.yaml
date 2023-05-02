@@ -14,10 +14,7 @@ dependencies:
   flutter:
     sdk: flutter
 
-  clip:
-    git:
-      url: https://github.com/SatisKia/dart_clip.git
-      ref: HEAD
+  dart_clip: ^1.0.1
 
 dev_dependencies:
 
