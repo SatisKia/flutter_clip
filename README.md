@@ -19,17 +19,16 @@ dependencies:
 
 ### Definition
 
-1, Create a class that inherits FlutterClipWidget and set GlobalObjectKey with the setKey function.
+1, Create a class that inherits `FlutterClipWidget` and set `GlobalObjectKey` with the `setKey` function.
 
-2, Override the init function and write initialization processing that does not involve drawing.
+2, Override the `init` function and write initialization processing that does not involve drawing.
 
-3, Override the paint function and describe the drawing process.
+3, Override the `paint` function and describe the drawing process.
 
 Simple Example:
 ```dart
 import 'package:flutter/cupertino.dart';
 
-import 'package:clip/extras/canvas.dart';
 import 'package:clip/extras/color_win.dart';
 import 'package:clip/extras/defcharinfo.dart';
 import 'package:clip/extras/easyclip.dart';
@@ -51,10 +50,6 @@ class HogeWidget extends FlutterClipWidget {
     // Register color palette
     clip().setPalette( COLOR_WIN );
 
-    doCommandGWorld = ( width, height ){ // Called when ":gworld" command is executed
-      Canvas canvas = curClip().resizeCanvas( width, height );
-      canvas.setFont( 10 );
-    };
     doCommandGUpdate = ( gWorld ){ // Called when ":gupdate TRUE" command is executed
       curClip().updateCanvas();
     };
@@ -94,12 +89,29 @@ class HogeWidget extends FlutterClipWidget {
 Widget hogeWidget = HogeWidget(width, height).build();
 ```
 
+### Animation
+
+By setting the return value of the `paint` function to `true`, the `paint` function will be called repeatedly at millisecond intervals set by the member function `setFrameTime` of `FlutterClipWidget`.
+
+```dart
+void setFrameTime( int frameTime )
+```
+
+To stop the animation, set the return value of the `paint` function to `false`.
+
+The last drawing time (ms) can be obtained with the member function `lastTime` of `FlutterClipWidget`.
+
+```dart
+int lastTime()
+```
+
 ## Demonstration
 
 lib/main.dart
 ```dart
 import 'package:flutter/material.dart';
 import 'package:flutter_clip/test/canvas.dart';
+import 'package:flutter_clip/test/loop.dart';
 
 void main() {
   runApp(const MyApp());
@@ -134,11 +146,15 @@ class _MyHomePageState extends State {
 
     double size = contentWidth < contentHeight ? contentWidth : contentHeight;
 
+    Widget body = CanvasTestWidget( size, size ).build();
+//    Widget body = Column( children:[ LoopTest1Widget( 243, 243 ).build(), LoopTest2Widget( 243, 243 ).build() ] );
+//    Widget body = LoopTest3Widget( 243, 243 ).build();
+
     return Scaffold(
       appBar: AppBar(
           toolbarHeight: 0
       ),
-      body: CanvasTestWidget( size, size ).build(),
+      body: body,
     );
   }
 }
