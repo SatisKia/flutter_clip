@@ -35,6 +35,8 @@ class _FlutterClipRenderBox extends RenderBox {
 
   @override
   void paint(PaintingContext context, ui.Offset offset) {
+    int startTime = DateTime.now().millisecondsSinceEpoch;
+
     offsetX = offset.dx;
     offsetY = offset.dy;
     width   = key.currentContext!.size!.width;
@@ -50,10 +52,19 @@ class _FlutterClipRenderBox extends RenderBox {
     c.clipRect(ui.Rect.fromLTWH(0, 0, width, height));
 
     clipCanvas.lock( c, ui.Paint() );
-    clipCanvas.paint();
+    bool loop = clipCanvas.paint();
     clipCanvas.unlock();
 
     c.restore();
+
+    if( loop ){
+      clipCanvas.setLastTime( DateTime.now().millisecondsSinceEpoch - startTime );
+      int sleepTime = clipCanvas.frameTime() - clipCanvas.lastTime();
+      if( (sleepTime < 0) || (sleepTime > clipCanvas.frameTime()) ){
+        sleepTime = 0;
+      }
+      Future.delayed( Duration( milliseconds: sleepTime ), (){ markNeedsPaint(); } );
+    }
   }
 }
 
@@ -63,13 +74,19 @@ class FlutterClipWidget {
   late double _width;
   late double _height;
 
+  late int _frame;
+  late int _last;
+
   FlutterClipWidget( double width, double height ){
     _clip = EasyClip();
     setClip( _clip );
-    _clip.createCanvas();
+    _clip.createCanvas( width.toInt(), height.toInt() );
 
     _width = width;
     _height = height;
+
+    _frame = 0;
+    _last = 0;
 
     init();
   }
@@ -77,6 +94,19 @@ class FlutterClipWidget {
   GlobalObjectKey? _key;
   void setKey( GlobalObjectKey key ){
     _key = key;
+  }
+
+  void setFrameTime( int frameTime ){
+    _frame = frameTime;
+  }
+  int frameTime(){
+    return _frame;
+  }
+  void setLastTime( int lastTime ){
+    _last = lastTime;
+  }
+  int lastTime(){
+    return _last;
   }
 
   EasyClip clip(){
@@ -100,8 +130,9 @@ class FlutterClipWidget {
   void init(){
     // 初期化処理
   }
-  void paint(){
+  bool paint(){
     // 描画処理
+    return false;
   }
 
   Widget build(){

@@ -45,8 +45,7 @@ class CanvasTestWidget extends FlutterClipWidget {
       }
     };
     doCommandGWorld = ( width, height ){
-      Canvas canvas = curClip().resizeCanvas( width, height );
-      canvas.setFont( 10 );
+      curCanvas().setFont( 10 );
     };
 
     // 関数の定義など、初回のみの処理はここで行ってしまう
@@ -200,10 +199,11 @@ class CanvasTestWidget extends FlutterClipWidget {
   }
 
   @override
-  void paint() {
+  bool paint() {
     clip().commandGWorld( width().toInt(), height().toInt() );
     clip().commandGColor( 252 );
     clip().procLine( "plot3d [\"exp([-\\](x*x+y*y] \\-2 2 0.2 \\-2 2 0.2 0.2 5 1" );
 //    clip().updateCanvas();
+    return false;
   }
 }

@@ -61,7 +61,7 @@ class HogeWidget extends FlutterClipWidget {
   }
 
   @override
-  void paint() {
+  bool paint() {
     clip().procScript( [
       ":ans FALSE",
       ":gworld 255 255",
@@ -83,6 +83,7 @@ class HogeWidget extends FlutterClipWidget {
       "next",
       ":gupdate TRUE"
     ] );
+    return false;
   }
 }
 ```
