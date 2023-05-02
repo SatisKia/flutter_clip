@@ -9,7 +9,7 @@ Provides a function to display graphics drawn by the CLIP engine as widgets.
 pubspec.yaml
 ```yml
 dependencies:
-  flutter_clip: ^1.0.1
+  flutter_clip: ^1.0.2
 ```
 
 ## Widget definition and construction
@@ -25,12 +25,8 @@ dependencies:
 Simple Example:
 ```dart
 import 'package:flutter/cupertino.dart';
-
-import 'package:dart_clip/extras/color_win.dart';
-import 'package:dart_clip/extras/defcharinfo.dart';
-import 'package:dart_clip/extras/easyclip.dart';
-import 'package:dart_clip/proc.dart';
-import 'package:flutter_clip/widget.dart';
+import 'package:dart_clip/clip.dart';
+import 'package:flutter_clip/flutter_clip.dart';
 
 class HogeWidget extends FlutterClipWidget {
   GlobalObjectKey hogeKey = const GlobalObjectKey( '__HOGE_KEY__' ); // Pass unique value
@@ -107,8 +103,7 @@ int lastTime()
 lib/main.dart
 ```dart
 import 'package:flutter/material.dart';
-import 'package:flutter_clip/test/canvas.dart';
-import 'package:flutter_clip/test/loop.dart';
+import 'package:flutter_clip/flutter_clip.dart';
 
 void main() {
   runApp(const MyApp());

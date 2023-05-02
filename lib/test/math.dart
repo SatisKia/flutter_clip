@@ -1,11 +1,5 @@
 import 'package:flutter/cupertino.dart';
-
-import 'package:dart_clip/math/complex.dart';
-import 'package:dart_clip/math/math.dart';
-import 'package:dart_clip/math/matrix.dart';
-import 'package:dart_clip/math/value.dart';
-import 'package:dart_clip/param/float.dart';
-import 'package:dart_clip/param/integer.dart';
+import 'package:dart_clip/clip.dart';
 
 class MathTest {
   void test( String s, bool b ){

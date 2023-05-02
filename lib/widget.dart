@@ -1,8 +1,6 @@
 import 'dart:ui' as ui;
-
 import 'package:flutter/cupertino.dart';
-
-import 'package:dart_clip/extras/easyclip.dart';
+import 'package:dart_clip/clip.dart';
 
 class _FlutterClipRenderObjectWidget extends SingleChildRenderObjectWidget {
   final RenderBox renderBox;
@@ -117,6 +115,11 @@ class FlutterClipWidget {
   }
   double height(){
     return _height;
+  }
+  double scale(){
+    double scaleX = _width / _clip.gWorld().width();
+    double scaleY = _height / _clip.gWorld().height();
+    return scaleX < scaleY ? scaleX : scaleY;
   }
 
   void lock( ui.Canvas c, ui.Paint p ){

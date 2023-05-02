@@ -1,12 +1,5 @@
 import 'package:flutter/cupertino.dart';
-
-import 'package:dart_clip/extras/easyclip.dart';
-import 'package:dart_clip/global.dart';
-import 'package:dart_clip/math/math.dart';
-import 'package:dart_clip/math/matrix.dart';
-import 'package:dart_clip/math/multiprec.dart';
-import 'package:dart_clip/math/value.dart';
-import 'package:dart_clip/proc.dart';
+import 'package:dart_clip/clip.dart';
 
 class EasyClipTest {
   void mpPrint( MPData val ){
