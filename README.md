@@ -9,7 +9,7 @@ Provides a function to display graphics drawn by the CLIP engine as widgets.
 pubspec.yaml
 ```yml
 dependencies:
-  flutter_clip: ^1.0.0
+  flutter_clip: ^1.0.1
 ```
 
 ## Widget definition and construction
@@ -142,10 +142,11 @@ class _MyHomePageState extends State {
     contentHeight = MediaQuery.of( context ).size.height - MediaQuery.of( context ).padding.top - MediaQuery.of( context ).padding.bottom;
 
     double size = contentWidth < contentHeight ? contentWidth : contentHeight;
+    double size2 = (contentWidth > contentHeight ? contentWidth : contentHeight) / 2;
 
     Widget body = CanvasTestWidget( size, size ).build();
-//    Widget body = Column( children:[ LoopTest1Widget( 243, 243 ).build(), LoopTest2Widget( 243, 243 ).build() ] );
-//    Widget body = LoopTest3Widget( 243, 243 ).build();
+//    Widget body = Column( children:[ LoopTest1Widget( size2, size2 ).build(), LoopTest2Widget( size2, size2 ).build() ] );
+//    Widget body = LoopTest3Widget( size, size ).build();
 
     return Scaffold(
       appBar: AppBar(

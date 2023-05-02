@@ -92,7 +92,9 @@ class LoopTest1Widget extends FlutterClipWidget {
   bool paint() {
     clip().procScript( script[1] ); // メイン
 //		clip().procLine( ":gtext [\"Draw Time ${lastTime()}] 2 (gheight - 2) 255" );
-    clip().updateCanvas( 3 );
+
+    Canvas canvas = clip().canvas();
+    clip().updateCanvas( canvas.width() / clip().gWorld().width() );
 
     Canvas canvas = clip().canvas();
     canvas.setColorRGB( 0x000000 );
@@ -198,7 +200,9 @@ class LoopTest2Widget extends FlutterClipWidget {
   bool paint() {
     clip().procScript( script[1] ); // メイン
 //		clip().procLine( ":gtext [\"Draw Time ${lastTime()}] 2 (gheight - 2) 255" );
-    clip().updateCanvas( 3 );
+
+    Canvas canvas = clip().canvas();
+    clip().updateCanvas( canvas.width() / clip().gWorld().width() );
 
     Canvas canvas = clip().canvas();
     canvas.setColorRGB( 0x000000 );
@@ -317,10 +321,10 @@ class LoopTest3Widget extends FlutterClipWidget {
     clip().procScript( script[1] ); // メイン
     if( clip().getValue( 'S' ).toFloat() != 0 && clip().getValue( 's' ).toFloat() == 0 ){
       clip().setPaletteColor( 0, 0xFF0000 );
-      clip().updateCanvas( 3 );
+      clip().updateCanvas( clip().canvas().width() / clip().gWorld().width() );
       return false;
     }
-    clip().updateCanvas( 3 );
+    clip().updateCanvas( clip().canvas().width() / clip().gWorld().width() );
     return true;
   }
 }
