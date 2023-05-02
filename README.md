@@ -2,7 +2,7 @@
 
 "Calculator Language for Immediate Processing"
 
-Provides a function to display images drawn by the CLIP engine as widgets.
+Provides a function to display graphics drawn by the CLIP engine as widgets.
 
 ## Use this package as a library
 
