@@ -65,6 +65,7 @@ class FlutterClipWidget {
 
   FlutterClipWidget( double width, double height ){
     _clip = EasyClip();
+    setClip( _clip );
     _clip.createCanvas();
 
     _width = width;

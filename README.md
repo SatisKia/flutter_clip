@@ -1,6 +1,10 @@
 # flutter_clip
 
-Calculator Language for Immediate Processing
+"Calculator Language for Immediate Processing"
+
+Provides a function to display images drawn by the CLIP engine as widgets.
+
+## Use this package as a library
 
 pubspec.yaml
 ```yml
@@ -11,7 +15,17 @@ dependencies:
       ref: HEAD
 ```
 
-Widget:
+## Widget definition and construction
+
+### Definition
+
+1, Create a class that inherits FlutterClipWidget and set GlobalObjectKey with the setKey function.
+
+2, Override the init function and write initialization processing that does not involve drawing.
+
+3, Override the paint function and describe the drawing process.
+
+Simple Example:
 ```dart
 import 'package:flutter/cupertino.dart';
 
@@ -23,7 +37,7 @@ import 'package:clip/proc.dart';
 import 'package:flutter_clip/widget.dart';
 
 class HogeWidget extends FlutterClipWidget {
-  GlobalObjectKey hogeKey = const GlobalObjectKey( '__HOGE_KEY__' ); // 一意の値を渡す
+  GlobalObjectKey hogeKey = const GlobalObjectKey( '__HOGE_KEY__' ); // Pass unique value
 
   HogeWidget(double width, double height) : super(width, height){
     setKey( hogeKey );
@@ -31,17 +45,17 @@ class HogeWidget extends FlutterClipWidget {
 
   @override
   void init() {
-    // 文字情報を登録する
+    // Register character information
     regGWorldDefCharInfo( 0 );
 
-    // カラー・パレットを登録する
+    // Register color palette
     clip().setPalette( COLOR_WIN );
 
-    doCommandGWorld = ( width, height ){ // ":gworld"コマンドが実行された時に呼ばれる
+    doCommandGWorld = ( width, height ){ // Called when ":gworld" command is executed
       Canvas canvas = curClip().resizeCanvas( width, height );
       canvas.setFont( 10 );
     };
-    doCommandGUpdate = ( gWorld ){ // ":gupdate TRUE"が実行された時に呼ばれる
+    doCommandGUpdate = ( gWorld ){ // Called when ":gupdate TRUE" command is executed
       curClip().updateCanvas();
     };
   }
@@ -73,11 +87,15 @@ class HogeWidget extends FlutterClipWidget {
 }
 ```
 
+### Construction
+
 ```dart
 Widget hogeWidget = HogeWidget(width, height).build();
 ```
 
-Example:
+## Demonstration
+
+lib/main.dart
 ```dart
 import 'package:flutter/material.dart';
 import 'package:flutter_clip/test/canvas.dart';
