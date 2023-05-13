@@ -15,11 +15,11 @@ class CanvasTestWidget extends FlutterClipWidget {
     regGWorldDefCharInfo( 0 );
 
     // カラー・パレットを登録する
-    clip().setPalette( COLOR_WIN );
+    clip().setPalette( colorWin );
 
     EasyCanvas easyCanvas = EasyCanvas();
-    gWorldLine = ( gWorld, x1, y1, x2, y2 ){
-      Canvas canvas = curCanvas();
+    ClipGWorld.gWorldLine = ( gWorld, x1, y1, x2, y2 ){
+      Canvas canvas = EasyClip.curCanvas();
       if( gWorld.color() == 252 ){
         canvas.setStrokeWidth( 0.5 );
       } else {
@@ -28,15 +28,15 @@ class CanvasTestWidget extends FlutterClipWidget {
       canvas.line( x1.toDouble(), y1.toDouble(), x2.toDouble(), y2.toDouble() );
     };
 
-    errorProc = ( err, num, func, token ){
+    ClipProc.errorProc = ( err, num, func, token ){
       if( func.isNotEmpty ){
-        debugPrint( "$func: $num行: ${getProcErrorDefString( err, token, false, false )}" );
+        debugPrint( "$func: $num行: ${ClipProcError.getDefString( err, token, false, false )}" );
       } else {
-        debugPrint( "$num行: ${getProcErrorDefString( err, token, false, false )}" );
+        debugPrint( "$num行: ${ClipProcError.getDefString( err, token, false, false )}" );
       }
     };
-    doCommandGWorld = ( width, height ){
-      curCanvas().setFont( 10 );
+    ClipProc.doCommandGWorld = ( width, height ){
+      EasyClip.curCanvas().setFont( 10 );
     };
 
     // 関数の定義など、初回のみの処理はここで行ってしまう

@@ -3,51 +3,51 @@ import 'package:dart_clip/clip.dart';
 
 class MyMultiPrec extends MultiPrec {
   // 離散フーリエ変換
-  void dft( List<MathComplex> ret, int ret_num, List<int> src, int src_start, int src_num ){
-    double T = 6.28318530717958647692 / ret_num;
+  void dft( List<MathComplex> ret, int retNum, List<int> src, int srcStart, int srcNum ){
+    double T = 6.28318530717958647692 / retNum;
     int t, x;
     double U, V;
-    for( t = ret_num - 1; t >= 0; t-- ){
+    for( t = retNum - 1; t >= 0; t-- ){
       U = T * t;
       ret[t] = MathComplex();
-      for( x = 0; x < src_num; x++ ){
+      for( x = 0; x < srcNum; x++ ){
         V = U * x;
-        ret[t].setReal( ret[t].real() + src[src_start + x] * MATH_COS( V ) );
-        ret[t].setImag( ret[t].imag() - src[src_start + x] * MATH_SIN( V ) );
+        ret[t].setReal( ret[t].real() + src[srcStart + x] * ClipMath.cos( V ) );
+        ret[t].setImag( ret[t].imag() - src[srcStart + x] * ClipMath.sin( V ) );
       }
     }
   }
 
   // 逆離散フーリエ変換
-  void idft( List<int> ret, int ret_start, int ret_num, List<MathComplex> src, int src_num ){
-    double T = 6.28318530717958647692 / ret_num;
+  void idft( List<int> ret, int retStart, int retNum, List<MathComplex> src, int srcNum ){
+    double T = 6.28318530717958647692 / retNum;
     int x, t;
     double U, V;
     double tmp;
-    for( x = ret_num - 1; x >= 0; x-- ){
+    for( x = retNum - 1; x >= 0; x-- ){
       U = T * x;
       tmp = 0;
-      for( t = 0; t < src_num; t++ ){
+      for( t = 0; t < srcNum; t++ ){
         V = U * t;
-        tmp += src[t].real() * MATH_COS( V ) - src[t].imag() * MATH_SIN( V );
+        tmp += src[t].real() * ClipMath.cos( V ) - src[t].imag() * ClipMath.sin( V );
       }
-      tmp /= ret_num;
-      ret[ret_start + x] = (tmp + 0.5).toInt();
+      tmp /= retNum;
+      ret[retStart + x] = (tmp + 0.5).toInt();
     }
   }
 
   // 畳み込み
-  void conv( List<int> ret, int ret_start, int ret_num, List<int> x, int x_start, int x_num, List<int> y, int y_start, int y_num ){
-    List<MathComplex> X = newComplexArray( ret_num );
-    List<MathComplex> Y = newComplexArray( ret_num );
-    dft( X, ret_num, x, x_start, x_num );
-    dft( Y, ret_num, y, y_start, y_num );
+  void conv( List<int> ret, int retStart, int retNum, List<int> x, int xStart, int xNum, List<int> y, int yStart, int yNum ){
+    List<MathComplex> X = MathComplex.newArray( retNum );
+    List<MathComplex> Y = MathComplex.newArray( retNum );
+    dft( X, retNum, x, xStart, xNum );
+    dft( Y, retNum, y, yStart, yNum );
 
-    for( int i = ret_num - 1; i >= 0; i-- ){
+    for( int i = retNum - 1; i >= 0; i-- ){
       X[i].mulAndAss( Y[i] );
     }
 
-    idft( ret, ret_start, ret_num, X, ret_num );
+    idft( ret, retStart, retNum, X, retNum );
   }
 
   // 多倍長整数同士の乗算
@@ -75,8 +75,8 @@ class MyMultiPrec extends MultiPrec {
     int i = 1, c = 0, rr;
     for( ; i < n; i++ ){
       rr = r[i] + c;
-      r[i] = MATH_IMOD( rr, MP_ELEMENT );
-      c = rr ~/ MP_ELEMENT;
+      r[i] = ClipMath.imod( rr, MultiPrec.element );
+      c = rr ~/ MultiPrec.element;
     }
     r[i] = c;
 
@@ -93,8 +93,8 @@ class MultiPrecTest {
   MPData t  = MPData();
   MPData p  = MPData();
   int start = 0;
-  bool pi_out5( int prec, int count, int order ){
-    int N = MATH_LOG( prec.toDouble() ) ~/ MATH_LOG( 2 ); // 繰り返し回数。log2(prec)程度の反復でよい。
+  bool piOut5( int prec, int count, int order ){
+    int N = ClipMath.log( prec.toDouble() ) ~/ ClipMath.log( 2 ); // 繰り返し回数。log2(prec)程度の反復でよい。
     MPData T = MPData();
     if( start == 0 ){
       mp.set( a, mp.F( "1" ) );
@@ -170,10 +170,10 @@ class MultiPrecTest {
       start = 0;
       if( order == 7 ){
         mp = MyMultiPrec();
-        while( pi_out5( prec, 1, 4 ) ){}
+        while( piOut5( prec, 1, 4 ) ){}
       } else {
         mp = MultiPrec();
-        while( pi_out5( prec, 1, order ) ){}
+        while( piOut5( prec, 1, order ) ){}
       }
       debugPrint( "${DateTime.now().millisecondsSinceEpoch - time} ms" );
       String str = mp.fnum2str( pi, prec );
@@ -227,15 +227,15 @@ class MultiPrecTest {
         mp.fround( b, i, mode );
         s = mp.fnum2str( b, i );
         switch( mode ){
-        case MultiPrec.FROUND_UP        : debugPrint( "UP      $s" ); break;
-        case MultiPrec.FROUND_DOWN      : debugPrint( "DOWN    $s" ); break;
-        case MultiPrec.FROUND_CEILING   : debugPrint( "CEILING $s" ); break;
-        case MultiPrec.FROUND_FLOOR     : debugPrint( "FLOOR   $s" ); break;
-        case MultiPrec.FROUND_HALF_UP   : debugPrint( "H_UP    $s" ); break;
-        case MultiPrec.FROUND_HALF_DOWN : debugPrint( "H_DOWN  $s" ); break;
-        case MultiPrec.FROUND_HALF_EVEN : debugPrint( "H_EVEN  $s" ); break;
-        case MultiPrec.FROUND_HALF_DOWN2: debugPrint( "H_DOWN2 $s" ); break;
-        case MultiPrec.FROUND_HALF_EVEN2: debugPrint( "H_EVEN2 $s" ); break;
+        case MultiPrec.froundUp       : debugPrint( "UP      $s" ); break;
+        case MultiPrec.froundDown     : debugPrint( "DOWN    $s" ); break;
+        case MultiPrec.froundCeiling  : debugPrint( "CEILING $s" ); break;
+        case MultiPrec.froundFloor    : debugPrint( "FLOOR   $s" ); break;
+        case MultiPrec.froundHalfUp   : debugPrint( "H_UP    $s" ); break;
+        case MultiPrec.froundHalfDown : debugPrint( "H_DOWN  $s" ); break;
+        case MultiPrec.froundHalfEven : debugPrint( "H_EVEN  $s" ); break;
+        case MultiPrec.froundHalfDown2: debugPrint( "H_DOWN2 $s" ); break;
+        case MultiPrec.froundHalfEven2: debugPrint( "H_EVEN2 $s" ); break;
         }
       }
     }
@@ -274,7 +274,7 @@ class MultiPrecTest {
     for( k = 2; k <= r; k++ ){
       pivot = denom[k - 1];
       if( pivot > 1 ){
-        offset = MATH_IMOD( n - r, k );
+        offset = ClipMath.imod( n - r, k );
         for( i = k - 1; i < r; i += k ){
           numer[i - offset] = numer[i - offset] ~/ pivot;
           denom[i] = denom[i] ~/ pivot;
@@ -339,7 +339,7 @@ class MultiPrecTest {
   void testFactorial(){
     mp = MultiPrec();
 
-    var i, j;
+    int i, j;
     int time;
     MPData a;
     String s;

@@ -3,7 +3,7 @@ import 'package:dart_clip/clip.dart';
 
 class EasyClipTest {
   void mpPrint( MPData val ){
-    MultiPrec mp = procMultiPrec();
+    MultiPrec mp = ClipProc.procMultiPrec();
 
     int p = mp.getPrec( val );
     int l = mp.getLen( val );
@@ -28,8 +28,8 @@ class EasyClipTest {
       } else {
         data += " ";
       }
-      int k = MATH_POW( 10, MP_DIGIT - 1 ).toInt();
-      for( int j = 0; j < MP_DIGIT; j++ ){
+      int k = ClipMath.pow( 10, MultiPrec.digit - 1 ).toInt();
+      for( int j = 0; j < MultiPrec.digit; j++ ){
         data += "${(val.val(i) ~/ k) % 10}";
         k = k ~/ 10;
       }
@@ -45,20 +45,20 @@ class EasyClipTest {
   }
 
   void main() {
-    printAnsComplex = ( real, imag ){
+    ClipProc.printAnsComplex = ( real, imag ){
       String str = real + imag;
       debugPrint( str );
     };
-    printAnsMultiPrec = ( str ){
+    ClipProc.printAnsMultiPrec = ( str ){
       debugPrint( str );
     };
-    printAnsMatrix = ( param, array ){
-      String str = curClip().getArrayTokenString( param, array, 0 );
+    ClipProc.printAnsMatrix = ( param, array ){
+      String str = EasyClip.curClip().getArrayTokenString( param, array, 0 );
       debugPrint( str );
     };
 
     EasyClip clip = EasyClip();
-    clip.setMode( CLIP_MODE_G_COMPLEX );
+    clip.setMode( ClipGlobal.modeGComplex );
 
     double value;
     String string;
@@ -129,13 +129,13 @@ class EasyClipTest {
     clip.procLine( "@a + @b" );
     value = clip.getAnsValue().real(); debugPrint( "real: $value" );
     value = clip.getAnsValue().imag(); debugPrint( "imag: $value" );
-    clip.setMode( CLIP_MODE_M_FRACT );
+    clip.setMode( ClipGlobal.modeMFract );
     clip.procLine( "[-]@c * 2" );
     isMinus = clip.getAnsValue().fractMinus(); debugPrint( "fractMinus: ${isMinus ? "true" : "false"}" );
     value = clip.getAnsValue().num();     debugPrint( "num: ${value.toInt()}" );
     value = clip.getAnsValue().denom();   debugPrint( "denom: ${value.toInt()}" );
     value = clip.getAnsValue().toFloat(); debugPrint( "toFloat: $value" );
-    clip.setMode( CLIP_MODE_G_COMPLEX );
+    clip.setMode( ClipGlobal.modeGComplex );
     clip.procLine( "trans @@d / 3" );
     string = "Ans = ${clip.getAnsMatrixString( 6 )}"; debugPrint( string );
     matrix = clip.getAnsMatrix(); // MathMatrixオブジェクト
@@ -145,7 +145,7 @@ class EasyClipTest {
     debugPrint( "${matrix.toFloat( 2, 0 )},${matrix.toFloat( 2, 1 )},${matrix.toFloat( 2, 2 )}" );
 
     // 時間計算の例
-    clip.setMode( CLIP_MODE_S_TIME );
+    clip.setMode( ClipGlobal.modeSTime );
     clip.procLine( "48h / 10" );
     mathValue = clip.getAnsValue(); debugPrint( "${mathValue.hour()}h ${mathValue.min()}m ${mathValue.sec()}s ${mathValue.frame()}f" );
     clip.procLine( "12:00:00" );
@@ -160,16 +160,16 @@ class EasyClipTest {
     mathValue = clip.getAnsValue(); debugPrint( "${mathValue.hour()}h ${mathValue.min()}m ${mathValue.sec()}s ${mathValue.frame()}f" );
 
     // 多倍長演算
-    clip.setMode( CLIP_MODE_F_MULTIPREC, 100, "down" );
+    clip.setMode( ClipGlobal.modeFMultiPrec, 100, "down" );
     debugPrint( "round down:" );
     clip.procLine( "1/3" );
-    clip.setMode( CLIP_MODE_F_MULTIPREC, "up" );
+    clip.setMode( ClipGlobal.modeFMultiPrec, "up" );
     debugPrint( "round up:" );
     clip.procLine( "1/3" );
-    clip.setMode( CLIP_MODE_F_MULTIPREC, 1000 );
+    clip.setMode( ClipGlobal.modeFMultiPrec, 1000 );
     clip.procLine( "@@a=[-]sqrt 2" );
     mpPrint( clip.getMultiPrec( 'a' ) );
-    MultiPrec mp = procMultiPrec();
+    MultiPrec mp = ClipProc.procMultiPrec();
     MPData mpArray = MPData();
     mp.fsqrt2( mpArray, mp.F( "2.0" ), 1000, 4 );
     mp.fneg( mpArray );
@@ -179,10 +179,10 @@ class EasyClipTest {
     } else {
       debugPrint( "false" );
     }
-    clip.setMode( CLIP_MODE_F_MULTIPREC, "down" );
+    clip.setMode( ClipGlobal.modeFMultiPrec, "down" );
     debugPrint( "round down:" );
     clip.procLine( "sqr @@b" );
-    clip.setMode( CLIP_MODE_F_MULTIPREC, "h_even" );
+    clip.setMode( ClipGlobal.modeFMultiPrec, "h_even" );
     debugPrint( "round h_even:" );
     clip.procLine( "sqr @@b" );
   }

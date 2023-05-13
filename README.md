@@ -9,7 +9,7 @@ Provides a function to display graphics drawn by the CLIP engine as widgets.
 pubspec.yaml
 ```yml
 dependencies:
-  flutter_clip: ^1.0.2
+  flutter_clip: ^1.0.3
 ```
 
 ## Widget definition and construction
@@ -43,8 +43,8 @@ class HogeWidget extends FlutterClipWidget {
     // Register color palette
     clip().setPalette( COLOR_WIN );
 
-    doCommandGUpdate = ( gWorld ){ // Called when ":gupdate TRUE" command is executed
-      curClip().updateCanvas();
+    ClipProc.doCommandGUpdate = ( gWorld ){ // Called when ":gupdate TRUE" command is executed
+      EasyClip.curClip().updateCanvas();
     };
   }
 
