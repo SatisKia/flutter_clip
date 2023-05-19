@@ -41,7 +41,7 @@ class HogeWidget extends FlutterClipWidget {
     regGWorldDefCharInfo( 0 );
 
     // Register color palette
-    clip().setPalette( COLOR_WIN );
+    clip().setPalette( colorWin );
 
     ClipProc.doCommandGUpdate = ( gWorld ){ // Called when ":gupdate TRUE" command is executed
       EasyClip.curClip().updateCanvas();
