@@ -1,6 +1,6 @@
 name: flutter_clip
 description: Calculator Language for Immediate Processing
-version: 1.0.3
+version: 1.0.4
 homepage: http://www5d.biglobe.ne.jp/~satis/
 
 environment:
@@ -14,7 +14,7 @@ dependencies:
   flutter:
     sdk: flutter
 
-  dart_clip: ^1.0.3
+  dart_clip: ^1.0.4
 
 dev_dependencies:
 
