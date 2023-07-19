@@ -1,3 +1,7 @@
+## 1.0.5
+
+Correspond to dart_clip 1.0.5.
+
 ## 1.0.4
 
 Correspond to dart_clip 1.0.4.

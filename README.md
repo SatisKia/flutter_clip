@@ -9,7 +9,7 @@ Provides a function to display graphics drawn by the CLIP engine as widgets.
 pubspec.yaml
 ```yml
 dependencies:
-  flutter_clip: ^1.0.4
+  flutter_clip: ^1.0.5
 ```
 
 ## Widget definition and construction
